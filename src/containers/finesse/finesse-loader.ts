@@ -1,7 +1,11 @@
 // Here define all finesse and its gadget basic global variable and
 const log_prefix = 'flog_'
 
-var f = {}; 
+var f = {}
+if(window.hasOwnProperty('finesse'))
+{
+    f = window.finesse
+}
 
 f.gadget = f.gadget || {}; 
 f.container = f.container || {}; 

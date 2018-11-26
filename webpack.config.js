@@ -4,7 +4,7 @@ module.exports = {
     entry: './src/index.ts',
     devtool: 'inline-source-map',
     devServer: {
-        openPage: path.toString() + 'index.html'
+        openPage: 'dist/index.html'
     },
     output: {
         filename: 'main.js',

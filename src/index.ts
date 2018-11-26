@@ -16,15 +16,16 @@ if (window.hasOwnProperty('finesse')) {
 
 document.body.appendChild(component());
 
-function testExport() {
+export function testExport() {
     console.log('h1')
-    //f.log('hi, from flog')
+    f.log('hi, from flog')
     console.log('h2')
 }
 
-module.exports = {
-    testExport
-};
+// module.exports = {
+//     testExport
+// };
+
 
 const arr = [1, 2, 3];
 const iAmJavascriptES6 = () => console.log(...arr);
