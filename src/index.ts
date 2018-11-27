@@ -1,24 +1,27 @@
-import { f } from "./containers/finesse/finesse-loader";
+import { flog, jFinesse } from "./containers/finesse/finesse-loader";
 
 function component() {
     let element = document.createElement('div');
 
     // Lodash, currently included via a script, is required for this line to work
-    element.innerHTML = 'hi2'
+    element.innerHTML = 'hi3'
 
     return element;
 }
 
+
 let obj = {name: 'mark', gender: 'gender'}
 if (window.hasOwnProperty('finesse')) {
-    console.log('mainjs, has own property', window)
+    console.log('flog_, has own property', window)
 }
 
 document.body.appendChild(component());
 
 export function testExport() {
     console.log('h1')
-    f.log('hi, from flog')
+    let jf = new jFinesse(window)
+    flog(jf)
+    jf.print()
     console.log('h2')
 }
 
