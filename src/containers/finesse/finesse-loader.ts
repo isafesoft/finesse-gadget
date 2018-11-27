@@ -11,8 +11,8 @@ const flog = (...params) => {
 
 
 class jFinesse {
-   finesse: object
-   gadget: object
+   finesse: any
+   gadget: any
    constructor(window){
        console.log('flog', window)
        this.finesse = window.finesse || {}
