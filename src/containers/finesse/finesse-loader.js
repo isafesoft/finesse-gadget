@@ -16,11 +16,44 @@ var flog = function () {
 };
 exports.flog = flog;
 var jFinesse = /** @class */ (function () {
-    function jFinesse(window) {
-        this.finesse = window.finesse;
+    function jFinesse(window, initCallBacks) {
+        console.log('flog', window);
+        this.finesse = window.finesse || {};
+        this.gadget = this.finesse.gadget || {};
+        this.callBacks = initCallBacks;
+        console.log('flog', 'my finesse', this.finesse, this.gadget);
+        this.init();
     }
+    jFinesse.prototype.init = function () {
+        var _this = this;
+        var cfg = this.gadget.Config;
+        this.callBacks.onAdjustWindowHeight();
+        //gadgets.window.adjustHeight();
+        // Initiate the ClientServices and load the user object. ClientServices are
+        // initialized with a reference to the current configuration.
+        this.finesse.clientservices.ClientServices.init(cfg, false);
+        // Initiate the ClientLogs. The gadget id will be logged as a part of the message
+        //clientLogs.init(gadgets.Hub, "LearningSampleGadget");
+        this.user = new this.finesse.restservices.User({
+            id: cfg.id,
+            onLoad: this.callBacks.onLoad,
+            onChange: this.callBacks.onChange
+        });
+        this.states = this.finesse.restservices.User.States;
+        // Initiate the ContainerServices and add a handler for when the tab is visible
+        // to adjust the height of this gadget in case the tab was not visible
+        // when the html was rendered (adjustHeight only works when tab is visible)
+        var containerServices = this.finesse.containerservices.ContainerServices.init();
+        containerServices.addHandler(this.finesse.containerservices.ContainerServices.Topics.ACTIVE_TAB, function () {
+            //clientLogs.log("Gadget is now visible");  // log to Finesse logger
+            // automatically adjust the height of the gadget to show the html
+            //gadgets.window.adjustHeight();
+            _this.callBacks.onAdjustWindowHeight();
+        });
+        containerServices.makeActiveTabReq();
+    };
     jFinesse.prototype.print = function () {
-        console.log(this.finesse);
+        flog(this.finesse);
     };
     return jFinesse;
 }());

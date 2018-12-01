@@ -10,12 +10,39 @@
 <body>
 
 <button onclick="testClick()">Test</button>
+<div>
+    <button id="ready">G1</button>
+    <button id="not_ready">G2</button>
+</div>
 
 </body>
 <script src="main.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 <script type="text/javascript">
     var testClick = function () {
-        TestLibExport.testExport();
+        //TestLibExport.testExport();
+        debugger
+        //Agent State
+        let btn1 = {title: 'Ready', state: 0, id: 'ready', tooltip: 'tp'}
+        let btn2 = {title: 'Not Ready', state: 0, id: 'not_ready', tooltip: 'tp'}
+
+        //Dial
+        let btn3 = {title: 'Dial', state: 0, id: 'dial', tooltip: 'tp'}
+        let btn4 = {title: 'Answer', state: 0, id: 'answer', tooltip: 'tp'}
+
+        window.toolbar = TestLibExport.initToolBar({state: [btn1, btn2]},
+            {dial: [btn3, btn4]}
+        );
+
+        console.log(window)
+        let bg = window.toolbar
+
+        TestLibExport.enableOneButton(1, bg, 'state')
+
+
     }
 </script>
 </html>
