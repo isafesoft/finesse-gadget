@@ -45,14 +45,11 @@ catch (e) {
 }
 */
 
-export function testExport(): FinesseLoader {
-    console.log('flog h1')
-    let g_jf = new FinesseLoader(window, callBacks);
-    return g_jf
+export function init(): FinesseLoader {
+    return new FinesseLoader(window, callBacks);
 }
 
 export function initToolBar(buttons: object): any {
-    debugger
     let keys: string[] = Object.keys(buttons)
     let values: any= Object.values(buttons)
     let hashBtnGroup: (any)[] = []
@@ -79,7 +76,7 @@ export function enableOneButton(index: number, arrBtnGrp: any, grpName: string) 
     let btnGrp = <ButtonGroup[]>arrBtnGrp.filter((ele) => {
         return ele.hasOwnProperty(grpName)
     })
-    console.log(btnGrp)
+    //console.log(btnGrp)
     if (btnGrp.length > 0) {
         //let bg = btnGrp[0][grpName] instanceof ButtonGroup
         //console.log(bg)
@@ -90,18 +87,31 @@ export function enableOneButton(index: number, arrBtnGrp: any, grpName: string) 
     }
 }
 
-export function setState(jf) {
-    debugger
+export function setState(jf, newState) {
     let us: UserState = undefined
     try {
         //console.log('set user state')
         us = new UserState(jf, 'ready', 'notready')
-        us.setState(USER_STATE_NOT_READY)
+        us.setState(newState)
     } catch (e) {
         console.log('exception, setState, ', e)
     }
    console.log('flog, test2')
 }
+
+export function getState(jf): string {
+    let us: UserState = undefined
+    let state: string = undefined
+    try {
+        //console.log('set user state')
+        us = new UserState(jf, 'ready', 'notready')
+        state = us.getState()
+    } catch (e) {
+        console.log('exception, getState, ', e)
+    }
+    return state.toUpperCase()
+}
+
 /*
 export function setState() {
     let jf  = undefined

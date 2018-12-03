@@ -29,4 +29,8 @@ export class UserState {
         }
     }
 
+    getState() {
+        return this.finesse.user.getState()
+    }
+
 }

@@ -9,10 +9,15 @@
 </head>
 <body>
 
-<button onclick="testClick()">Test</button>
+<button onclick="testEnableDisableToolbarButton()">Test Disable Toolbar Button Group</button>
 <div>
+    <span>This is a button group, when you click, button G1 will be disabled</span>
     <button id="ready">G1</button>
     <button id="not_ready">G2</button>
+</div>
+
+<div>
+    <button onclick="setAgentState()">Set Agent State to 'NOT_READY'</button>
 </div>
 
 </body>
@@ -22,9 +27,36 @@
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
-    var testClick = function () {
-        //TestLibExport.testExport();
-        debugger
+    const STR_JF = 'jf'
+    const STR_TOOLBAR = 'fns_toolbar'
+
+    const BTNG_STATE = 'state'
+
+    // call this to change agent state
+    // Cisco Finesse context will be placed in window.jf globally
+    // Note, this should be first called
+    const initFinesse = () => {
+       window[STR_JF] = FinesseLib.init();
+       initToolBar()
+
+       // update corresponding state button group state
+        updateAgentToolbarButton()
+    }
+
+    const updateAgentToolbarButton = () => {
+        let state = FinesseLib.getState(window[STR_JF])
+        if('READY' === state)
+        {
+            FinesseLib.enableOneButton(0, window[STR_TOOLBAR], BTNG_STATE)
+        }
+        else {
+            FinesseLib.enableOneButton(1, window[STR_TOOLBAR], BTNG_STATE)
+        }
+    }
+    // call this to config the top toolbar butons
+    // The toolbar button groups context will be placed in window.toolbar globally
+    // Note, this should be called secondly
+    const initToolBar = () => {
         //Agent State
         let btn1 = {title: 'Ready', state: 0, id: 'ready', tooltip: 'tp'}
         let btn2 = {title: 'Not Ready', state: 0, id: 'not_ready', tooltip: 'tp'}
@@ -33,16 +65,36 @@
         let btn3 = {title: 'Dial', state: 0, id: 'dial', tooltip: 'tp'}
         let btn4 = {title: 'Answer', state: 0, id: 'answer', tooltip: 'tp'}
 
-        window.toolbar = TestLibExport.initToolBar({state: [btn1, btn2]},
+        window[STR_TOOLBAR] = FinesseLib.initToolBar({[BTNG_STATE]: [btn1, btn2]},
             {dial: [btn3, btn4]}
         );
-
-        console.log(window)
-        let bg = window.toolbar
-
-        TestLibExport.enableOneButton(1, bg, 'state')
-
-
     }
+
+    // call this to disable / enable the specific button
+    const testEnableDisableToolbarButton = () => {
+        //TestLibExport.testExport();
+        if(!window.hasOwnProperty(STR_TOOLBAR)) {
+            initToolBar();
+        }
+        console.log(window)
+        let bg = window[STR_TOOLBAR]
+
+        FinesseLib.enableOneButton(1, bg, BTNG_STATE)
+    }
+
+    // call this to update agent state
+    const setAgentState = (newState = 'NOT_READY') =>
+    {
+        if(!window.hasOwnProperty(STR_JF)) {
+            window[STR_JF] = FinesseLib.init();
+        }
+
+        // update agent state
+        FinesseLib.setState(window[STR_JF], newState)
+
+        // update Toolbar Agent State button group's state
+        updateAgentToolbarButton()
+    }
+
 </script>
 </html>

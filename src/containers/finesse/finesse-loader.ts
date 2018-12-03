@@ -68,7 +68,17 @@ class FinesseLoader {
         console.log( 'handleError', userevent)
     };
 
-    init() {
+    public static delay(ms: number = 1000) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    async delayLoad() {
+        console.log('delay start')
+        await FinesseLoader.delay(3000)
+        console.log('delay end')
+    }
+
+    async init() {
         let cfg = this.gadget.Config;
         this.callBacks.onAdjustWindowHeight()
         //gadgets.window.adjustHeight();
@@ -90,10 +100,12 @@ class FinesseLoader {
                onChange: this.handleUserChange
            });
 
-           debugger
+           console.log('delay start')
+           await FinesseLoader.delay(3000)
+           console.log('delay end')
            let ext = this.user.getExtension()
            this.states = this.finesse.restservices.User.States;
-           this.user.setState(this.states.READY)
+           //this.user.setState(this.states.READY)
 
 
            //let res = this.user.setState(this.states.READY)
